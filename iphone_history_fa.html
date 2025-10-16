@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تاریخچه تعاملی آیفون</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        .nav-item.active {
+            color: #1D4ED8;
+            border-bottom: 2px solid #1D4ED8;
+            font-weight: 700;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .timeline {
+            position: relative;
+            width: 100%;
+            margin: 2rem 0;
+            padding: 2rem 0;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #e2e8f0;
+            top: 0;
+            bottom: 0;
+            right: 50%;
+            margin-right: -2px;
+        }
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        .timeline-container.left {
+            left: 0;
+        }
+        .timeline-container.right {
+            left: 50%;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid #3B82F6;
+            top: 28px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-container.left::after {
+            right: -10px;
+        }
+        .timeline-container.right::after {
+            left: -10px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<!-- Chosen Palette: Minimalist Tech -->
+<!-- Application Structure Plan: The application is designed as a single-page interactive journey. Instead of a linear article, the information architecture is centered around a main tab-based navigation ('داستان', 'گاه‌شمار', 'تاثیر'). This structure allows users to choose their exploration path: reading the narrative story, exploring a visual timeline of key models, or analyzing the iPhone's market impact through interactive charts. This non-linear approach enhances usability by breaking down complex history into digestible, user-controlled segments, making the content more engaging and accessible than a static report. -->
+<!-- Visualization & Content Choices: Report Info: iPhone models and release dates -> Goal: Show chronological change -> Viz/Presentation: Interactive visual timeline (HTML/CSS) -> Interaction: Users can visually track the evolution of the iPhone's design and key features. Justification: A timeline is more intuitive for understanding historical progression than a list. Report Info: Sales data and market share -> Goal: Compare performance over time and against competitors -> Viz/Presentation: Bar and Doughnut charts (Chart.js) -> Interaction: Hovering over chart elements reveals specific data points (e.g., units sold in a year), and a dropdown allows filtering the sales chart by era. Justification: Charts provide a quick, powerful way to understand quantitative data and trends. Report Info: Key features of each era -> Goal: Inform users about technological innovations -> Viz/Presentation: Tabbed content sections with text and icons -> Interaction: Clicking on navigation tabs instantly switches the displayed content without a page reload. Justification: This keeps the interface clean and focuses the user's attention on one topic at a time. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">انقلابی در دستان شما</h1>
+            <p class="text-lg md:text-xl text-gray-600">سفر تعاملی در تاریخچه آیفون</p>
+        </header>
+
+        <nav class="sticky top-0 bg-gray-50/80 backdrop-blur-sm z-10 mb-8 border-b">
+            <div class="flex justify-center items-center space-x-reverse space-x-4 md:space-x-8">
+                <button data-tab="story" class="nav-item py-4 px-2 md:px-4 text-lg active">داستان</button>
+                <button data-tab="timeline" class="nav-item py-4 px-2 md:px-4 text-lg">گاه‌شمار</button>
+                <button data-tab="impact" class="nav-item py-4 px-2 md:px-4 text-lg">تأثیر</button>
+            </div>
+        </nav>
+
+        <main>
+            <section id="story" class="content-section active">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-md space-y-6 text-justify leading-loose">
+                    <h2 class="text-2xl font-bold text-center mb-4 text-blue-700">از یک ایده تا یک اکوسیستم جهانی</h2>
+                    <p>داستان آیفون فقط داستان یک محصول نیست؛ داستان تغییر یک صنعت، بازتعریف ارتباطات و شکل‌دهی به فرهنگ مدرن است. قبل از سال ۲۰۰۷، تلفن‌های هوشمند دستگاه‌هایی پیچیده، عمدتاً برای کاربران تجاری و با کیبوردهای فیزیکی بودند. وب‌گردی در آن‌ها تجربه‌ای محدود و ناقص بود. استیو جابز، مدیرعامل اپل، دیدگاهی متفاوت داشت: یک دستگاه جادویی که ترکیبی از سه محصول باشد: یک آی‌پاد با صفحه لمسی، یک تلفن انقلابی و یک دستگاه ارتباط اینترنتی پیشگام.</p>
+                    <p>این ایده که تحت عنوان "پروژه بنفش" (Project Purple) به‌صورت کاملاً محرمانه توسعه یافت، منجر به خلق اولین آیفون شد. دستگاهی که با صفحه‌نمایش چندلمسی خود، رابط کاربری بصری و مرورگر وب کامل، استاندارد جدیدی برای تلفن‌های هوشمند تعریف کرد. اما انقلاب واقعی یک سال بعد، با معرفی اپ استور (App Store) رخ داد. اپ استور بستری را فراهم کرد که در آن توسعه‌دهندگان می‌توانستند اپلیکیشن‌های خود را بسازند و بفروشند و اینگونه بود که آیفون از یک دستگاه به یک اکوسیستم قدرتمند تبدیل شد.</p>
+                     <p>هر نسل جدید آیفون، نوآوری‌های تازه‌ای را به همراه داشت: از دستیار صوتی سیری (Siri) و نمایشگر رتینا (Retina) گرفته تا حسگرهای اثر انگشت (Touch ID) و تشخیص چهره (Face ID). دوربین‌های آیفون به تدریج جایگزین دوربین‌های کامپکت شدند و عکاسی محاسباتی (Computational Photography) را به میان توده‌ی مردم آوردند. این تکامل مداوم، آیفون را نه تنها به یک ابزار ارتباطی، بلکه به مرکز زندگی دیجیتال میلیون‌ها نفر در سراسر جهان تبدیل کرده است.</p>
+                </div>
+            </section>
+
+            <section id="timeline" class="content-section">
+                 <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+                     <h2 class="text-2xl font-bold text-center mb-8 text-blue-700">گاه‌شمار مدل‌های کلیدی آیفون</h2>
+                     <div class="timeline">
+                        <div class="timeline-container left">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۰۷ - iPhone</h3>
+                                <p class="text-sm text-gray-600">آغاز انقلاب با صفحه‌نمایش چندلمسی و iOS.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-container right">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۰۸ - iPhone 3G</h3>
+                                <p class="text-sm text-gray-600">معرفی اینترنت 3G و مهم‌تر از آن، اپ استور.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-container left">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۱۰ - iPhone 4</h3>
+                                <p class="text-sm text-gray-600">طراحی نمادین شیشه و فلز و نمایشگر رتینا.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-container right">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۱۱ - iPhone 4S</h3>
+                                <p class="text-sm text-gray-600">معرفی دستیار صوتی هوشمند، سیری (Siri).</p>
+                            </div>
+                        </div>
+                         <div class="timeline-container left">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۱۳ - iPhone 5S</h3>
+                                <p class="text-sm text-gray-600">معرفی Touch ID و پردازنده ۶۴ بیتی A7.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-container right">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۱۴ - iPhone 6/6 Plus</h3>
+                                <p class="text-sm text-gray-600">ورود به دنیای صفحه‌نمایش‌های بزرگتر.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-container left">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۱۷ - iPhone X</h3>
+                                <p class="text-sm text-gray-600">طراحی تمام‌صفحه، حذف دکمه هوم و معرفی Face ID.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-container right">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۲۰ - iPhone 12</h3>
+                                <p class="text-sm text-gray-600">پشتیبانی از 5G و بازگشت به طراحی با لبه‌های تخت.</p>
+                            </div>
+                        </div>
+                         <div class="timeline-container left">
+                            <div class="timeline-content">
+                                <h3 class="font-bold text-lg">۲۰۲۲ - iPhone 14 Pro</h3>
+                                <p class="text-sm text-gray-600">معرفی Dynamic Island و دوربین اصلی ۴۸ مگاپیکسلی.</p>
+                            </div>
+                        </div>
+                     </div>
+                 </div>
+            </section>
+
+            <section id="impact" class="content-section">
+                <div class="space-y-12">
+                     <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">فروش جهانی آیفون</h2>
+                        <p class="text-center text-gray-600 mb-4">نمودار فروش سالانه آیفون (به میلیون دستگاه)</p>
+                         <div class="flex justify-center mb-4">
+                             <select id="salesFilter" class="border rounded p-2 bg-gray-100">
+                                 <option value="all">تمام دوران</option>
+                                 <option value="early">دوران اولیه (۲۰۰۷-۲۰۱۲)</option>
+                                 <option value="growth">دوران رشد (۲۰۱۳-۲۰۱۷)</option>
+                                 <option value="modern">دوران مدرن (۲۰۱۸-۲۰۲۳)</option>
+                             </select>
+                         </div>
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+                            <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">درآمد اپل</h2>
+                             <p class="text-center text-gray-600 mb-4">رشد درآمد سالانه اپل پس از معرفی آیفون (به میلیارد دلار)</p>
+                            <div class="chart-container h-80">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+                            <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">سهم بازار سیستم‌عامل</h2>
+                            <p class="text-center text-gray-600 mb-4">مقایسه سهم بازار جهانی iOS و Android</p>
+                            <div class="chart-container h-80">
+                                <canvas id="marketShareChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 pt-8 border-t">
+            <p class="text-gray-500">طراحی شده برای نمایش تعاملی تاریخچه فناوری.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.nav-item');
+            const contentSections = document.querySelectorAll('.content-section');
+            const salesFilter = document.getElementById('salesFilter');
+
+            const salesData = {
+                labels: ['۲۰۰۷', '۲۰۰۸', '۲۰۰۹', '۲۰۱۰', '۲۰۱۱', '۲۰۱۲', '۲۰۱۳', '۲۰۱۴', '۲۰۱۵', '۲۰۱۶', '۲۰۱۷', '۲۰۱۸', '۲۰۱۹', '۲۰۲۰', '۲۰۲۱', '۲۰۲۲', '۲۰۲۳'],
+                values: [1.4, 11.6, 20.7, 40.0, 72.3, 125.0, 150.2, 169.2, 231.2, 211.8, 216.7, 217.7, 206.7, 206.1, 233.9, 232.2, 235.8]
+            };
+            
+            const revenueData = {
+                labels: ['۲۰۰۶', '۲۰۰۷', '۲۰۰۸', '۲۰۰۹', '۲۰۱۰', '۲۰۱۱', '۲۰۱۲', '۲۰۱۳', '۲۰۱۵', '۲۰۱۸', '۲۰۲۱', '۲۰۲۳'],
+                values: [19.3, 24.0, 37.4, 42.9, 65.2, 108.2, 156.5, 170.9, 233.7, 265.6, 365.8, 383.2]
+            };
+
+            const marketShareData = {
+                labels: ['Android', 'iOS', 'سایر'],
+                values: [71.8, 27.6, 0.6]
+            };
+            
+            let salesChart, revenueChart, marketShareChart;
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        rtl: true,
+                        bodyFont: {
+                            family: 'Vazirmatn'
+                        },
+                        titleFont: {
+                            family: 'Vazirmatn'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Vazirmatn'
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                family: 'Vazirmatn'
+                            }
+                        }
+                    }
+                }
+            };
+            
+            function createSalesChart(data) {
+                const ctx = document.getElementById('salesChart').getContext('2d');
+                 if (salesChart) {
+                    salesChart.destroy();
+                }
+                salesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'فروش (میلیون)',
+                            data: data.values,
+                            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: chartOptions
+                });
+            }
+
+            function createRevenueChart() {
+                 const ctx = document.getElementById('revenueChart').getContext('2d');
+                 revenueChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: revenueData.labels,
+                        datasets: [{
+                            label: 'درآمد (میلیارد دلار)',
+                            data: revenueData.values,
+                            fill: true,
+                            borderColor: 'rgb(22, 163, 74)',
+                            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: chartOptions
+                });
+            }
+
+            function createMarketShareChart() {
+                const ctx = document.getElementById('marketShareChart').getContext('2d');
+                marketShareChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: marketShareData.labels,
+                        datasets: [{
+                            label: 'سهم بازار',
+                            data: marketShareData.values,
+                            backgroundColor: [
+                                'rgb(255, 159, 64)',
+                                'rgb(54, 162, 235)',
+                                'rgb(201, 203, 207)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                         plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    font: { family: 'Vazirmatn' }
+                                }
+                            },
+                             tooltip: chartOptions.plugins.tooltip
+                         }
+                    }
+                });
+            }
+            
+            function handleTabClick(e) {
+                const targetTab = e.currentTarget.dataset.tab;
+                
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.dataset.tab === targetTab) {
+                        tab.classList.add('active');
+                    }
+                });
+
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetTab) {
+                        section.classList.add('active');
+                    }
+                });
+
+                if (targetTab === 'impact' && !salesChart) {
+                    createSalesChart(salesData);
+                    createRevenueChart();
+                    createMarketShareChart();
+                }
+            }
+
+            function filterSalesData() {
+                const filterValue = salesFilter.value;
+                let filteredData = { labels: [], values: [] };
+
+                if (filterValue === 'all') {
+                    filteredData = salesData;
+                } else {
+                    let startYear, endYear;
+                    if (filterValue === 'early') { startYear = 2007; endYear = 2012; }
+                    if (filterValue === 'growth') { startYear = 2013; endYear = 2017; }
+                    if (filterValue === 'modern') { startYear = 2018; endYear = 2023; }
+
+                    salesData.labels.forEach((label, index) => {
+                        const year = parseInt(label);
+                        if (year >= startYear && year <= endYear) {
+                            filteredData.labels.push(label);
+                            filteredData.values.push(salesData.values[index]);
+                        }
+                    });
+                }
+                createSalesChart(filteredData);
+            }
+
+            tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+            salesFilter.addEventListener('change', filterSalesData);
+
+        });
+    </script>
+</body>
+</html>
